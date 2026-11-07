@@ -1,8 +1,8 @@
-# SpellGame — MVP 0.1
+﻿# SpellGame — MVP 0.1
 
 Настольное приложение на Go + Ebitengine: главное меню, редактор характеристик
 и игровой экран с текущим профилем персонажа и инвентарём.
-`SpellGame.exe` открывает лаунчер с проверкой обновлений из публичных GitHub Releases.
+`SpellGame-Launcher.exe` открывает лаунчер с проверкой обновлений из публичных GitHub Releases.
 Пользователям не нужно настраивать токен.
 Пошаговая настройка и выпуск версий: [LAUNCHER.md](LAUNCHER.md).
 Техническое задание: [spellgame_mvp.md](spellgame_mvp.md).
@@ -33,13 +33,13 @@ $env:GOOS = 'windows'
 $env:GOARCH = 'amd64'
 $env:CGO_ENABLED = '0'
 go build -trimpath -ldflags="-H=windowsgui" -o dist/SpellGame-game.exe ./cmd/game
-go build -trimpath -ldflags="-H=windowsgui" -o dist/SpellGame.exe ./cmd/launcher
+go build -trimpath -ldflags="-H=windowsgui" -o dist/SpellGame-Launcher.exe ./cmd/launcher
 ```
 
 Для кросс-компиляции предусмотрен `sh scripts/build-windows.sh`.
 Кросс-компиляция не заменяет проверку на Windows.
 
-После успешной сборки запускайте `dist/SpellGame.exe` двойным кликом.
+После успешной сборки запускайте `dist/SpellGame-Launcher.exe` двойным кликом.
 Кнопка «Играть» проверит релиз, установит обновление и запустит игру.
 Для прямого запуска игры при разработке используйте `dist/SpellGame-game.exe`.
 Go и игровой движок на компьютере игрока не требуются. Шрифт и его лицензия
@@ -101,7 +101,7 @@ Go и игровой движок на компьютере игрока не т
 ## Проверка готовности
 
 Зависимости загружены, `go.sum` создан. Сборка Windows x64 выполнена:
-`dist/SpellGame.exe` (лаунчер) и `dist/SpellGame-game.exe` (игра).
+`dist/SpellGame-Launcher.exe` (лаунчер) и `dist/SpellGame-game.exe` (игра).
 Команда `go test ./...` проверяет навигацию, анимацию и механизм обновлений.
 Отрисовка окна лаунчера проверена на Windows. Первый GitHub Release ещё
 нужно опубликовать тегом по инструкции из LAUNCHER.md.
@@ -118,3 +118,4 @@ Go и игровой движок на компьютере игрока не т
 
 Навигационный тест: `go test ./...` (для пакетов движка нужна графическая среда).
 Доменная модель отдельно: `go test ./internal/domain`.
+

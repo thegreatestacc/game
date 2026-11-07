@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$Version = 'dev',
     [string]$Repository = 'thegreatestacc/game'
 )
@@ -23,7 +23,7 @@ try {
     $linkFlags = "-H=windowsgui -X game/internal/buildinfo.Version=$Version -X game/internal/buildinfo.Repository=$Repository"
     go build -trimpath "-ldflags=$linkFlags" -o dist/SpellGame-game.exe ./cmd/game
     if ($LASTEXITCODE -ne 0) { throw 'Game build failed.' }
-    go build -trimpath "-ldflags=$linkFlags" -o dist/SpellGame.exe ./cmd/launcher
+    go build -trimpath "-ldflags=$linkFlags" -o dist/SpellGame-Launcher.exe ./cmd/launcher
     if ($LASTEXITCODE -ne 0) { throw 'Launcher build failed.' }
     $manifest = [ordered]@{
         version = $Version
@@ -34,10 +34,11 @@ try {
     $manifestJson = $manifest | ConvertTo-Json
     [IO.File]::WriteAllText((Join-Path (Get-Location) 'dist/release-manifest.json'), $manifestJson, (New-Object Text.UTF8Encoding($false)))
     Copy-Item internal/assets/fonts/LICENSE.txt dist/FONT-LICENSE.txt -Force
-    Write-Host 'Built launcher: dist/SpellGame.exe; game: dist/SpellGame-game.exe; release-manifest.json'
+    Write-Host 'Built launcher: dist/SpellGame-Launcher.exe; game: dist/SpellGame-game.exe; release-manifest.json'
 } finally {
     $env:GOOS = $oldGOOS
     $env:GOARCH = $oldGOARCH
     $env:CGO_ENABLED = $oldCGO
     Pop-Location
 }
+

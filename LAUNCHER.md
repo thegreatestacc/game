@@ -21,7 +21,7 @@ git push origin v0.2.0
 
 GitHub Actions прогонит тесты, соберёт Windows x64 лаунчер и игру, загрузит файлы и опубликует Release. Следите за результатом во вкладке **Actions**. Первый Release должен успешно опубликоваться, прежде чем лаунчер сможет найти игру.
 
-В Release будут `SpellGame.exe` (лаунчер), `SpellGame-game.exe`, `release-manifest.json` и `FONT-LICENSE.txt`. В репозитории должны быть разрешены GitHub Actions и запись `contents` для workflow.
+В Release будут `SpellGame-Launcher.exe` (лаунчер), `SpellGame-game.exe`, `release-manifest.json` и `FONT-LICENSE.txt`. В репозитории должны быть разрешены GitHub Actions и запись `contents` для workflow.
 
 ## Выпуск обновлений
 
@@ -43,7 +43,7 @@ powershell -ExecutionPolicy Bypass -File scripts/build-windows.ps1 -Version v0.2
 
 Скрипт создаёт оба EXE в `dist`. Версия локальной сборки по умолчанию — `dev`.
 
-Игра устанавливается в `%LOCALAPPDATA%\SpellGame\versions\<SHA-256>`. Она сначала скачивается во временный файл и проверяется. Существующие версии не перезаписываются. Лаунчер автоматически не обновляется: при изменении его протокола загрузите новый `SpellGame.exe` из Releases.
+Игра устанавливается в `%LOCALAPPDATA%\SpellGame\versions\<SHA-256>`. Она сначала скачивается во временный файл и проверяется. Существующие версии не перезаписываются. Лаунчер автоматически не обновляется: при изменении его протокола загрузите новый `SpellGame-Launcher.exe` из Releases.
 
 Проверка:
 
@@ -51,3 +51,4 @@ powershell -ExecutionPolicy Bypass -File scripts/build-windows.ps1 -Version v0.2
 go test ./...
 go vet ./...
 ```
+

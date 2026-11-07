@@ -1,4 +1,4 @@
-name: Windows release
+﻿name: Windows release
 
 on:
   push:
@@ -37,7 +37,8 @@ jobs:
           RELEASE_VERSION: ${{ github.ref_name }}
         run: |
           $ErrorActionPreference = 'Stop'
-          gh release create $env:RELEASE_VERSION --verify-tag --draft --title "SpellGame $env:RELEASE_VERSION" --generate-notes dist/SpellGame.exe dist/SpellGame-game.exe dist/release-manifest.json dist/FONT-LICENSE.txt
+          gh release create $env:RELEASE_VERSION --verify-tag --draft --title "SpellGame $env:RELEASE_VERSION" --generate-notes dist/SpellGame-Launcher.exe dist/SpellGame-game.exe dist/release-manifest.json dist/FONT-LICENSE.txt
           if ($LASTEXITCODE -ne 0) { throw 'Release upload failed. A draft may remain; inspect it before retrying.' }
           gh release edit $env:RELEASE_VERSION --draft=false --latest
           if ($LASTEXITCODE -ne 0) { throw 'Release publication failed.' }
+
