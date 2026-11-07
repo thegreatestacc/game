@@ -1,0 +1,6 @@
+.cache/
+dist/
+.idea/
+.env
+.env.*
+*.token
