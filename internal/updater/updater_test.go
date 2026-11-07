@@ -30,8 +30,8 @@ func setup(t *testing.T) *fixture {
 	h := sha256.Sum256(f.data)
 	f.manifest = Manifest{Version: "v1.0.0", Asset: GameAsset, SHA256: hex.EncodeToString(h[:]), Size: int64(len(f.data))}
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.Header.Get("Authorization") != "Bearer test-token" {
-			t.Error("missing private repository authentication")
+		if r.Header.Get("Authorization") != "" {
+			t.Error("public repository request unexpectedly included a token")
 		}
 		switch r.URL.Path {
 		case "/repos/owner/game/releases/latest":
@@ -60,7 +60,7 @@ func setup(t *testing.T) *fixture {
 		}
 	}))
 	t.Cleanup(srv.Close)
-	f.client = New("owner/game", "test-token", t.TempDir())
+	f.client = New("owner/game", "", t.TempDir())
 	f.client.apiBase = srv.URL
 	return f
 }
@@ -165,10 +165,6 @@ func TestInvalidManifestAndAccessDenied(t *testing.T) {
 	f.manifest.Version = "v9.9.9"
 	if _, err := f.client.Latest(context.Background()); err == nil {
 		t.Fatal("mismatched tag accepted")
-	}
-	f.client.Token = ""
-	if _, err := f.client.Latest(context.Background()); err == nil {
-		t.Fatal("missing private token accepted")
 	}
 }
 

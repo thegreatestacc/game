@@ -51,10 +51,11 @@ type Progress func(message string, fraction float64)
 
 type Client struct {
 	Repository string
-	Token      string
-	Directory  string
-	HTTP       *http.Client
-	apiBase    string
+	// Token is optional; public releases are fetched anonymously.
+	Token     string
+	Directory string
+	HTTP      *http.Client
+	apiBase   string
 }
 
 func New(repository, token, directory string) *Client {
@@ -103,11 +104,11 @@ func (c *Client) request(ctx context.Context, path, accept string) (*http.Respon
 		resp.Body.Close()
 		switch resp.StatusCode {
 		case 401:
-			return nil, errors.New("GitHub отклонил токен; проверьте SPELLGAME_GITHUB_TOKEN")
+			return nil, errors.New("GitHub отклонил запрос к релизу")
 		case 403, 429:
-			return nil, errors.New("GitHub ограничил доступ: проверьте права Contents: read токена или повторите позже")
+			return nil, errors.New("GitHub ограничил частоту запросов; подождите и повторите попытку")
 		case 404:
-			return nil, errors.New("релиз недоступен: проверьте репозиторий, опубликованный релиз и доступ токена к нему")
+			return nil, errors.New("релиз не найден; проверьте публикацию первого релиза GitHub Actions")
 		default:
 			return nil, fmt.Errorf("GitHub ответил HTTP %d; повторите позже", resp.StatusCode)
 		}
@@ -139,9 +140,6 @@ func (c *Client) Latest(ctx context.Context) (Available, error) {
 	var result Available
 	ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
-	if c.Token == "" {
-		return result, errors.New("для приватного репозитория задайте SPELLGAME_GITHUB_TOKEN и перезапустите лаунчер")
-	}
 	data, err := c.read(ctx, "/releases/latest", "application/vnd.github+json", 2<<20)
 	if err != nil {
 		return result, err

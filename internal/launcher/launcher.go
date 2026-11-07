@@ -50,7 +50,7 @@ func New() (*Launcher, error) {
 		return nil, fmt.Errorf("не удалось найти папку данных пользователя: %w", err)
 	}
 	ctx, cancel := context.WithCancel(context.Background())
-	return &Launcher{p: ui.Painter{Font: font}, client: updater.New(buildinfo.Repository, os.Getenv("SPELLGAME_GITHUB_TOKEN"), filepath.Join(root, "SpellGame")),
+	return &Launcher{p: ui.Painter{Font: font}, client: updater.New(buildinfo.Repository, "", filepath.Join(root, "SpellGame")),
 		ctx: ctx, cancel: cancel, events: make(chan event, 32), status: "Подготовка проверки версии…",
 		play: ui.Button{X: 392, Y: 467, W: 232, H: 60, Label: "Играть"}, update: ui.Button{X: 648, Y: 467, W: 260, H: 60, Label: "Обновить игру"}}, nil
 }
@@ -106,11 +106,7 @@ func (l *Launcher) start(action string) {
 		cmd := exec.Command(path)
 		cmd.Dir = filepath.Dir(path)
 		// The game itself has no reason to inherit the launcher's GitHub token.
-		for _, entry := range os.Environ() {
-			if !strings.HasPrefix(strings.ToUpper(entry), "SPELLGAME_GITHUB_TOKEN=") {
-				cmd.Env = append(cmd.Env, entry)
-			}
-		}
+		cmd.Env = os.Environ()
 		if err := cmd.Start(); err != nil {
 			fail(fmt.Errorf("не удалось запустить игру; повторите обновление и проверьте доступ к файлу"))
 			return
@@ -185,7 +181,7 @@ func (l *Launcher) Draw(dst *ebiten.Image) {
 	} else {
 		l.p.Center(dst, "Перед каждым запуском проверяется версия и целостность игры", 640, 552, 17, ui.Muted)
 	}
-	l.p.Center(dst, "Приватный GitHub · "+buildinfo.Repository, 640, 604, 15, ui.Muted)
+	l.p.Center(dst, "GitHub Releases · "+buildinfo.Repository, 640, 604, 15, ui.Muted)
 	l.p.Text(dst, "ЛАУНЧЕР "+buildinfo.Version, 48, 680, 14, ui.Muted)
 }
 
