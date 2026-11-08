@@ -51,7 +51,7 @@ func (s *CharacterScreen) Draw(dst *ebiten.Image) {
 	s.p.Center(dst, "ПЕРСОНАЖ", 640, 44, 26, ui.Ink)
 	ui.Frame(dst, 48, 120, 370, 510)
 	ui.Sigil(dst, 233, 342, 140)
-	s.p.Center(dst, "I  /  АРКАННЫЙ ОРДЕН", 233, 144, 16, ui.Gold)
+	s.p.Center(dst, "БЕЗ СНАРЯЖЕНИЯ", 233, 144, 16, ui.Gold)
 	if s.a.Character != nil {
 		b := s.a.Character.Bounds()
 		scale := math.Min(300/float64(b.Dx()), 350/float64(b.Dy()))

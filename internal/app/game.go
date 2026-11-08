@@ -28,13 +28,28 @@ func New() (*Game, error) {
 func (g *Game) Update() error {
 	x, y := ebiten.CursorPosition()
 	in := ui.Input{X: x, Y: y, Click: inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft), Escape: inpututil.IsKeyJustPressed(ebiten.KeyEscape)}
+	if ebiten.IsFocused() {
+		in.Interact = inpututil.IsKeyJustPressed(ebiten.KeyE)
+		if ebiten.IsKeyPressed(ebiten.KeyW) {
+			in.MoveY--
+		}
+		if ebiten.IsKeyPressed(ebiten.KeyS) {
+			in.MoveY++
+		}
+		if ebiten.IsKeyPressed(ebiten.KeyA) {
+			in.MoveX--
+		}
+		if ebiten.IsKeyPressed(ebiten.KeyD) {
+			in.MoveX++
+		}
+	}
 	// Only the old screen receives this tick's input. A held mouse button
 	// cannot trigger another action after switching screens.
 	switch g.screen.Update(in) {
 	case screens.OpenCharacter:
 		g.screen = screens.NewCharacter(g.painter, g.assets, &g.character)
 	case screens.OpenPlay:
-		g.screen = screens.NewPlay(g.painter, g.assets, &g.character)
+		g.screen = screens.NewLocation(g.painter, g.assets, &g.character)
 	case screens.OpenMenu:
 		g.screen = screens.NewMenu(g.painter)
 	case screens.Exit:

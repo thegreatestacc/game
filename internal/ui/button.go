@@ -4,6 +4,8 @@ import "github.com/hajimehoshi/ebiten/v2"
 
 // Input is sampled once per Update, before any screen transition.
 type Input struct {
+	Interact      bool
+	MoveX, MoveY  float64
 	X, Y          int
 	Click, Escape bool
 }

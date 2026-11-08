@@ -1,0 +1,4 @@
+Tool: built-in image_gen, transparent_background=true
+Asset: internal/assets/sprites/tutorial-wizard.png
+
+Create a single full-body pixel-art NPC sprite for a top-down fantasy RPG, facing front, centered with 10 percent transparent padding, actual transparent background. Mysterious elderly wizard in a dark indigo hooded robe, face hidden in shadow with just two tiny pale turquoise glowing eyes, long silver beard, modest antique gold robe trim, holding a wooden staff topped with a small cyan crystal. Calm wise guide, not aggressive. Crisp low resolution sprite, clearly visible square pixel clusters equivalent to a 48x72 pixel game sprite enlarged nearest neighbor, limited palette, 3-tone shading, strong readable silhouette. Same scale and proportions as a classic medieval pixel RPG villager. No scene, no text, no border, no ground, no cast shadow, no aura outside the silhouette. Entire staff and shoes visible.
